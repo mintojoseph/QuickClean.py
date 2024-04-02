@@ -15,7 +15,7 @@ parser.add_argument('-m','--music', help='Directory you want to copy music files
 parser.add_argument('-p','--pictures', help='Directory you want to copy picture files to. If absolute path is not provided, will create directory inside the source directory', default='pictures', required=False)
 parser.add_argument('-v','--videos', help='Directory you want to copy video files to. If absolute path is not provided, will create directory inside the source directory', default='videos', required=False)
 parser.add_argument('-d','--documents', help='Directory you want to copy document files to. If absolute path is not provided, will create directory inside the source directory', default='documents',required=False)
-
+parser.add_argument('-a','--archives', help='Directory you want to copy archive files to. If absolute path is not provided, will create directory inside the source directory', default='archive',required=False)
 
 args = parser.parse_args()
 os.chdir(args.source)
@@ -23,10 +23,10 @@ os.chdir(args.source)
 
 #Parameters to clean.
 music = glob.glob("*.mp3") + glob.glob("*.flac") + glob.glob("*.aac")
-pictures = glob.glob("*.png") + glob.glob ('*.jpg') + glob.glob("*.bmp")+ glob.glob("*.gif")
+pictures = glob.glob("*.png") + glob.glob("*.jpeg") + glob.glob("*.svg") + glob.glob ('*.jpg') + glob.glob ('*.jpeg') + glob.glob("*.bmp")+ glob.glob("*.gif") + glob.glob("*.psd")
 videos = glob.glob("*.avi") + glob.glob("*.mp4") + glob.glob("*.flv") + glob.glob("*.mkv") + glob.glob("*.mov")
-documents = glob.glob ('*.pdf') + glob.glob ('*.PDF') + glob.glob ("*.xls") + glob.glob ("*.xlsx") + glob.glob ("*.pptx") + glob.glob ("*.docx") + glob.glob("*.m") + glob.glob("*.ppt") + glob.glob("*.doc")
-
+documents = glob.glob ('*.pdf') + glob.glob ('*.PDF') + glob.glob ("*.xls") + glob.glob ("*.xlsx") + glob.glob ("*.pptx") + glob.glob ("*.docx") + glob.glob("*.m") + glob.glob("*.ppt") + glob.glob("*.doc") + glob.glob("*.md") + glob.glob("*.csv")
+archives = glob.glob ('*.gz') + glob.glob ('*.zip') + glob.glob ('*.tar') + glob.glob ('*.rpm')
    
 #Copies to destination directory, and then deletes the file. This is done because shutil's copy method has the ability to overwrite. 
 for songs in music:
@@ -49,4 +49,8 @@ for document in documents:
 		os.mkdir(args.documents)
 	shutil.copy(document,args.documents)
 	os.remove(document)
-
+for archive in archives:
+	if not os.path.exists(args.archives):
+		os.mkdir(args.archives)
+	shutil.copy(archive,args.archives)
+	os.remove(archive)
